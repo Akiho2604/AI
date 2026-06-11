@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>SNSに頼らない予約導線構築サービス</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="./css/style.css">
+
+<style>
+
+:root{
+  --main:#d98b8b;
+  --sub:#f7f3ef;
+  --dark:#333;
+  --light:#fff;
+}
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+body{
+  font-family:'Noto Sans JP',sans-serif;
+  color:var(--dark);
+  line-height:1.8;
+}
+
+img{
+  max-width:100%;
+}
+
+.container{
+  width:min(1100px,90%);
+  margin:auto;
+}
+
+section{
+  padding:100px 0;
+}
+
+h2{
+  font-size:40px;
+  text-align:center;
+  margin-bottom:60px;
+}
+
+.btn{
+  display:inline-block;
+  background:var(--main);
+  color:white;
+  padding:18px 40px;
+  border-radius:999px;
+  text-decoration:none;
+  font-weight:bold;
+  transition:.3s;
+}
+
+.btn:hover{
+  transform:translateY(-3px);
+}
+
+.fade{
+  opacity:0;
+  transform:translateY(30px);
+  transition:1s;
+}
+
+.fade.show{
+  opacity:1;
+  transform:none;
+}
+
+/* FV */
+
+.hero{
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  background:linear-gradient(
+      rgba(255,255,255,.9),
+      rgba(255,255,255,.9)
+  ),
+  #f7f3ef;
+}
+
+.hero-inner{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:60px;
+  align-items:center;
+}
+
+.catch{
+  color:var(--main);
+  font-size:18px;
+  font-weight:bold;
+}
+
+.hero h1{
+  font-size:56px;
+  line-height:1.3;
+  margin:20px 0;
+}
+
+.hero p{
+  font-size:20px;
+  margin-bottom:30px;
+}
+
+.mockup{
+  background:white;
+  border-radius:30px;
+  padding:40px;
+  box-shadow:0 20px 50px rgba(0,0,0,.08);
+}
+
+.flow{
+  display:flex;
+  flex-direction:column;
+  gap:20px;
+}
+
+.flow div{
+  text-align:center;
+  padding:20px;
+  background:#fafafa;
+  border-radius:15px;
+  font-weight:bold;
+}
+
+/* 悩み */
+
+.problem{
+  background:white;
+}
+
+.cards{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+  gap:20px;
+}
+
+.card{
+  background:#fff;
+  padding:30px;
+  border-radius:20px;
+  box-shadow:0 5px 20px rgba(0,0,0,.05);
+  text-align:center;
+}
+
+.card span{
+  font-size:40px;
+}
+
+/* 原因 */
+
+.reason{
+  background:var(--sub);
+}
+
+.path{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:15px;
+}
+
+.step{
+  background:white;
+  padding:25px;
+  border-radius:15px;
+  min-width:180px;
+  text-align:center;
+}
+
+.arrow{
+  font-size:30px;
+}
+
+.danger{
+  color:red;
+  font-weight:bold;
+}
+
+/* before after */
+
+.compare{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:40px;
+}
+
+.before,
+.after{
+  padding:40px;
+  border-radius:20px;
+}
+
+.before{
+  background:#f5f5f5;
+}
+
+.after{
+  background:#fff3f3;
+}
+
+.compare h3{
+  margin-bottom:20px;
+}
+
+/* service */
+
+.services{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:20px;
+}
+
+.service{
+  background:white;
+  border-radius:20px;
+  padding:30px;
+  box-shadow:0 5px 20px rgba(0,0,0,.05);
+  text-align:center;
+}
+
+/* reasons */
+
+.reason-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:20px;
+}
+
+.reason-item{
+  background:white;
+  padding:30px;
+  border-radius:20px;
+  text-align:center;
+  box-shadow:0 5px 20px rgba(0,0,0,.05);
+}
+
+/* faq */
+
+.faq{
+  max-width:800px;
+  margin:auto;
+}
+
+.faq-item{
+  margin-bottom:15px;
+  border:1px solid #ddd;
+  border-radius:10px;
+  overflow:hidden;
+}
+
+.question{
+  padding:20px;
+  background:white;
+  cursor:pointer;
+  font-weight:bold;
+}
+
+.answer{
+  display:none;
+  padding:20px;
+  background:#fafafa;
+}
+
+/* CTA */
+
+.cta{
+  background:var(--main);
+  color:white;
+  text-align:center;
+}
+
+.cta h2{
+  color:white;
+}
+
+.cta ul{
+  list-style:none;
+  margin:30px 0;
+}
+
+.cta li{
+  margin-bottom:10px;
+}
+
+/* flow */
+
+.timeline{
+  display:flex;
+  justify-content:space-between;
+  flex-wrap:wrap;
+  gap:20px;
+}
+
+.timeline div{
+  flex:1;
+  min-width:140px;
+  background:white;
+  padding:25px;
+  border-radius:20px;
+  text-align:center;
+  box-shadow:0 5px 20px rgba(0,0,0,.05);
+}
+
+/* fixed button */
+
+.fixed-btn{
+  position:fixed;
+  bottom:20px;
+  right:20px;
+  z-index:999;
+}
+
+.fixed-btn a{
+  background:#ff6b6b;
+  color:white;
+  padding:18px 25px;
+  border-radius:999px;
+  text-decoration:none;
+  font-weight:bold;
+  box-shadow:0 10px 20px rgba(0,0,0,.2);
+}
+
+@media(max-width:768px){
+
+.hero-inner,
+.compare{
+grid-template-columns:1fr;
+}
+
+.hero h1{
+font-size:38px;
+}
+
+.services,
+.reason-grid{
+grid-template-columns:1fr;
+}
+
+h2{
+font-size:30px;
+}
+
+}
+
+</style>
+</head>
+
+<body>
+
+<section class="hero">
+
+<div class="container hero-inner">
+
+<div>
+
+<div class="catch">
+Instagram中心で集客しているママ向け個人事業主へ
+</div>
+
+<h1>
+Instagramを休むと<br>
+売上が止まる。<br><br>
+
+その不安から<br>
+卒業しませんか？
+</h1>
+
+<p>
+SNSに頼らず予約が入る
+導線を構築します。
+</p>
+
+<a href="#contact" class="btn">
+無料相談する
+</a>
+
+</div>
+
+<div class="mockup">
+
+<div class="flow">
+<div>Instagram</div>
+<div>↓</div>
+<div>ホームページ</div>
+<div>↓</div>
+<div>LINE</div>
+<div>↓</div>
+<div>予約</div>
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+<section class="problem fade">
+
+<div class="container">
+
+<h2>こんなお悩みありませんか？</h2>
+
+<div class="cards">
+
+<div class="card">📱<br>投稿を休むのが怖い</div>
+<div class="card">📈<br>フォロワーは増える</div>
+<div class="card">💬<br>問い合わせは来る</div>
+<div class="card">😢<br>予約が安定しない</div>
+<div class="card">⏰<br>SNSに疲れている</div>
+<div class="card">👶<br>自分の時間がない</div>
+
+</div>
+
+</div>
+
+</section>
+
+<section class="reason fade">
+
+<div class="container">
+
+<h2>予約が安定しない本当の理由</h2>
+
+<div class="path">
+
+<div class="step">Instagram</div>
+<div class="arrow">→</div>
+
+<div class="step">プロフィール</div>
+<div class="arrow">→</div>
+
+<div class="step danger">離脱</div>
+<div class="arrow">→</div>
+
+<div class="step">問い合わせ</div>
+<div class="arrow">→</div>
+
+<div class="step">予約</div>
+
+</div>
+
+</div>
+
+</section>
+
+<section class="fade">
+
+<div class="container">
+
+<h2>仕組みが働く集客へ</h2>
+
+<div class="compare">
+
+<div class="before">
+
+<h3>Before</h3>
+
+<ul>
+<li>SNSに追われる</li>
+<li>休日もDM確認</li>
+<li>予約数が読めない</li>
+<li>毎日投稿が必要</li>
+</ul>
+
+</div>
+
+<div class="after">
+
+<h3>After</h3>
+
+<ul>
+<li>予約導線が働く</li>
+<li>本業に集中できる</li>
+<li>家族時間が増える</li>
+<li>問い合わせが整理される</li>
+</ul>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+<section class="fade">
+
+<div class="container">
+
+<h2>提供内容</h2>
+
+<div class="services">
+
+<div class="service">
+<h3>①強み整理</h3>
+</div>
+
+<div class="service">
+<h3>②導線設計</h3>
+</div>
+
+<div class="service">
+<h3>③HP制作</h3>
+</div>
+
+<div class="service">
+<h3>④LINE構築</h3>
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+<section class="fade">
+
+<div class="container">
+
+<h2>選ばれる理由</h2>
+
+<div class="reason-grid">
+
+<div class="reason-item">
+ママ向け専門
+</div>
+
+<div class="reason-item">
+予約導線設計
+</div>
+
+<div class="reason-item">
+分かりやすい説明
+</div>
+
+<div class="reason-item">
+制作後サポート
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+<section class="fade">
+
+<div class="container">
+
+<h2>よくある質問</h2>
+
+<div class="faq">
+
+<div class="faq-item">
+<div class="question">本当に問い合わせは増えますか？</div>
+<div class="answer">
+現状分析を行い、予約導線を改善することで成果につながる可能性を高めます。
+</div>
+</div>
+
+<div class="faq-item">
+<div class="question">Instagramだけではダメですか？</div>
+<div class="answer">
+Instagramは重要ですが、それだけに依存しない仕組み作りが大切です。
+</div>
+</div>
+
+<div class="faq-item">
+<div class="question">更新できますか？</div>
+<div class="answer">
+ご自身でも更新しやすい構成で制作します。
+</div>
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+<section class="cta" id="contact">
+
+<div class="container">
+
+<h2>
+まずは無料相談で
+現在の集客導線を整理しませんか？
+</h2>
+
+<ul>
+<li>予約が安定しない原因</li>
+<li>改善ポイント</li>
+<li>やるべき優先順位</li>
+<li>ホームページが必要か診断</li>
+</ul>
+
+<a href="#" class="btn">
+無料相談を申し込む
+</a>
+
+</div>
+
+</section>
+
+<section>
+
+<div class="container">
+
+<h2>ご契約後の流れ</h2>
+
+<div class="timeline">
+
+<div>ヒアリング</div>
+<div>強み整理</div>
+<div>導線設計</div>
+<div>制作</div>
+<div>公開</div>
+<div>改善</div>
+
+</div>
+
+</div>
+
+</section>
+
+<div class="fixed-btn">
+<a href="#contact">無料相談</a>
+</div>
+
+<script>
+
+const fades=document.querySelectorAll('.fade');
+
+const observer=new IntersectionObserver(entries=>{
+entries.forEach(entry=>{
+if(entry.isIntersecting){
+entry.target.classList.add('show');
+}
+});
+});
+
+fades.forEach(el=>observer.observe(el));
+
+document.querySelectorAll('.question').forEach(item=>{
+item.addEventListener('click',()=>{
+
+const answer=item.nextElementSibling;
+
+answer.style.display=
+answer.style.display==="block"
+? "none"
+: "block";
+
+});
+});
+
+</script>
+<script src="./js/script.js"></script>
+</body>
+</html>
