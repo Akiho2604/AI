@@ -295,6 +295,85 @@ h2{
   margin-bottom:10px;
 }
 
+/* お問い合わせフォーム */
+
+.contact-form{
+  max-width:600px;
+  margin:40px auto 0;
+  text-align:left;
+}
+
+.form-group{
+  margin-bottom:20px;
+}
+
+.form-group label{
+  display:block;
+  margin-bottom:8px;
+  font-weight:bold;
+  font-size:14px;
+}
+
+.form-group label .required{
+  color:#ffe0e0;
+  font-size:12px;
+  margin-left:6px;
+}
+
+.form-group input,
+.form-group textarea{
+  width:100%;
+  padding:14px 18px;
+  border:none;
+  border-radius:10px;
+  font-family:inherit;
+  font-size:16px;
+  color:var(--dark);
+}
+
+.form-group textarea{
+  min-height:140px;
+  resize:vertical;
+}
+
+.form-group input:focus,
+.form-group textarea:focus{
+  outline:3px solid rgba(255,255,255,.5);
+}
+
+.contact-form .btn{
+  width:100%;
+  border:none;
+  cursor:pointer;
+  font-size:16px;
+  font-family:inherit;
+}
+
+.contact-form .btn:disabled{
+  opacity:.7;
+  cursor:not-allowed;
+  transform:none;
+}
+
+.form-message{
+  margin-top:16px;
+  padding:14px 18px;
+  border-radius:10px;
+  text-align:center;
+  font-weight:bold;
+  display:none;
+}
+
+.form-message.success{
+  display:block;
+  background:rgba(255,255,255,.2);
+}
+
+.form-message.error{
+  display:block;
+  background:rgba(0,0,0,.15);
+}
+
 /* flow */
 
 .timeline{
@@ -607,9 +686,35 @@ Instagramは重要ですが、それだけに依存しない仕組み作りが�
 <li>ホームページが必要か診断</li>
 </ul>
 
-<a href="#" class="btn">
-無料相談を申し込む
-</a>
+<form id="contactForm" class="contact-form" action="#contact" novalidate>
+
+<div class="form-group">
+<label for="name">お名前<span class="required">必須</span></label>
+<input type="text" id="name" name="name" required placeholder="山田 花子">
+</div>
+
+<div class="form-group">
+<label for="email">メールアドレス<span class="required">必須</span></label>
+<input type="email" id="email" name="email" required placeholder="example@email.com">
+</div>
+
+<div class="form-group">
+<label for="phone">電話番号</label>
+<input type="tel" id="phone" name="phone" placeholder="090-1234-5678">
+</div>
+
+<div class="form-group">
+<label for="message">お問い合わせ内容<span class="required">必須</span></label>
+<textarea id="message" name="message" required placeholder="ご相談内容をご記入ください"></textarea>
+</div>
+
+<button type="button" class="btn" id="submitBtn">無料相談を申し込む</button>
+
+<p id="formMessage" class="form-message" role="alert"></p>
+
+</form>
+
+<iframe name="gasHiddenFrame" id="gasHiddenFrame" style="display:none" title="送信処理"></iframe>
 
 </div>
 
@@ -669,5 +774,92 @@ answer.style.display==="block"
 
 </script>
 <script src="./js/script.js"></script>
+<script>
+(function () {
+  // GASのWebアプリURL（/exec で終わるURL）
+  // ※「新しいデプロイ」を作った場合はここを更新してください
+  var GAS_ENDPOINT_URL = "https://script.google.com/macros/s/AKfycbx6XSwyl6uPS7V_upvXzEj9N3h-utOV9cIIftP8G72-asdSz2Z-P0oAoOZE0klNqRrTnQ/exec";
+
+  var contactForm = document.getElementById("contactForm");
+  var submitBtn = document.getElementById("submitBtn");
+  var formMessage = document.getElementById("formMessage");
+
+  if (!contactForm || !submitBtn || !formMessage) {
+    return;
+  }
+
+  function showMessage(type, text) {
+    formMessage.className = type ? "form-message " + type : "form-message";
+    formMessage.textContent = text;
+  }
+
+  function sendContactForm() {
+    var nameInput = document.getElementById("name");
+    var emailInput = document.getElementById("email");
+    var phoneInput = document.getElementById("phone");
+    var messageInput = document.getElementById("message");
+
+    if (!nameInput || !emailInput || !messageInput) {
+      showMessage("error", "フォームの読み込みに失敗しました。ページを再読み込みしてください。");
+      return;
+    }
+
+    var name = nameInput.value.trim();
+    var email = emailInput.value.trim();
+    var phone = phoneInput ? phoneInput.value.trim() : "";
+    var message = messageInput.value.trim();
+
+    showMessage("", "");
+
+    if (!name || !email || !message) {
+      showMessage("error", "必須項目を入力してください。");
+      return;
+    }
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = "送信中...";
+
+    var gasForm = document.createElement("form");
+    gasForm.method = "POST";
+    gasForm.action = GAS_ENDPOINT_URL;
+    gasForm.target = "gasHiddenFrame";
+    gasForm.style.display = "none";
+
+    [
+      ["name", name],
+      ["email", email],
+      ["phone", phone],
+      ["message", message]
+    ].forEach(function (field) {
+      var input = document.createElement("input");
+      input.type = "hidden";
+      input.name = field[0];
+      input.value = field[1];
+      gasForm.appendChild(input);
+    });
+
+    document.body.appendChild(gasForm);
+    gasForm.submit();
+
+    setTimeout(function () {
+      if (gasForm.parentNode) {
+        gasForm.parentNode.removeChild(gasForm);
+      }
+    }, 3000);
+
+    showMessage("success", "お問い合わせを受け付けました。ありがとうございます。");
+    contactForm.reset();
+
+    submitBtn.disabled = false;
+    submitBtn.textContent = "無料相談を申し込む";
+  }
+
+  submitBtn.addEventListener("click", sendContactForm);
+  contactForm.addEventListener("submit", function (e) {
+    e.preventDefault();
+    sendContactForm();
+  });
+})();
+</script>
 </body>
 </html>

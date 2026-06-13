@@ -29,6 +29,10 @@ faqItems.forEach((item)=>{
   const question = item.querySelector(".question");
   const answer = item.querySelector(".answer");
 
+  if (!question || !answer) {
+    return;
+  }
+
   question.addEventListener("click",()=>{
 
     item.classList.toggle("active");
@@ -45,16 +49,18 @@ faqItems.forEach((item)=>{
 });
 
 
+// お問い合わせフォームの処理は index.html 内のスクリプトで行っています
+
 // CTAボタン表示制御
 
 const fixedBtn = document.querySelector(".fixed-btn");
 
-window.addEventListener("scroll",()=>{
-
-  if(window.scrollY > 600){
-    fixedBtn.style.opacity = "1";
-  }else{
-    fixedBtn.style.opacity = "0";
-  }
-
-});
+if (fixedBtn) {
+  window.addEventListener("scroll", () => {
+    if (window.scrollY > 600) {
+      fixedBtn.style.opacity = "1";
+    } else {
+      fixedBtn.style.opacity = "0";
+    }
+  });
+}

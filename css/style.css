@@ -345,6 +345,87 @@
   .cta li{
     margin-bottom:10px;
   }
+
+  /* ----------------
+  お問い合わせフォーム
+  ---------------- */
+
+  .contact-form{
+    max-width:600px;
+    margin:40px auto 0;
+    text-align:left;
+  }
+
+  .form-group{
+    margin-bottom:20px;
+  }
+
+  .form-group label{
+    display:block;
+    margin-bottom:8px;
+    font-weight:700;
+    font-size:14px;
+  }
+
+  .form-group label .required{
+    color:#ffe0e0;
+    font-size:12px;
+    margin-left:6px;
+  }
+
+  .form-group input,
+  .form-group textarea{
+    width:100%;
+    padding:14px 18px;
+    border:none;
+    border-radius:10px;
+    font-family:inherit;
+    font-size:16px;
+    color:var(--text);
+  }
+
+  .form-group textarea{
+    min-height:140px;
+    resize:vertical;
+  }
+
+  .form-group input:focus,
+  .form-group textarea:focus{
+    outline:3px solid rgba(255,255,255,.5);
+  }
+
+  .contact-form .btn{
+    width:100%;
+    border:none;
+    cursor:pointer;
+    font-size:16px;
+    font-family:inherit;
+  }
+
+  .contact-form .btn:disabled{
+    opacity:.7;
+    cursor:not-allowed;
+    transform:none;
+  }
+
+  .form-message{
+    margin-top:16px;
+    padding:14px 18px;
+    border-radius:10px;
+    text-align:center;
+    font-weight:700;
+    display:none;
+  }
+
+  .form-message.success{
+    display:block;
+    background:rgba(255,255,255,.2);
+  }
+
+  .form-message.error{
+    display:block;
+    background:rgba(0,0,0,.15);
+  }
   
   /* ----------------
   タイムライン
