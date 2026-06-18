@@ -85,21 +85,16 @@
   ---------------- */
   
   .hero{
-    min-height:100vh;
-    display:flex;
-    align-items:center;
-    background:linear-gradient(
-      135deg,
-      #fff,
-      #f7f3ef
-    );
+    min-height:auto;
+    display:block;
+    background:#fff;
   }
   
   .hero-inner{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:60px;
-    align-items:center;
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+    width:100%;
   }
   
   .catch{
@@ -114,9 +109,20 @@
     margin-bottom:20px;
   }
   
-  .hero p{
+  .hero p:not(.hero-label):not(.hero-sub):not(.hero-desc):not(.hero-cta-lead){
     font-size:1.2rem;
     margin-bottom:30px;
+  }
+
+  .hero p.hero-sub,
+  .hero p.hero-desc{
+    margin-bottom:18px;
+  }
+
+  .hero p.hero-label{
+    font-size:12px;
+    font-weight:500;
+    margin-bottom:20px;
   }
   
   .mockup{
@@ -239,111 +245,174 @@
   }
   
   /* ----------------
-  サービス
-  ---------------- */
-  
-  .services{
-    display:grid;
-    grid-template-columns:repeat(4,1fr);
-    gap:20px;
-  }
-  
-  .service{
-    background:white;
-    padding:35px;
-    border-radius:20px;
-    box-shadow:var(--shadow);
-    text-align:center;
-    transition:.3s;
-  }
-  
-  .service:hover{
-    transform:translateY(-5px);
-  }
-  
-  /* ----------------
-  選ばれる理由
-  ---------------- */
-  
-  .reason-grid{
-    display:grid;
-    grid-template-columns:repeat(4,1fr);
-    gap:20px;
-  }
-  
-  .reason-item{
-    background:white;
-    padding:30px;
-    border-radius:20px;
-    box-shadow:var(--shadow);
-    text-align:center;
-  }
-  
-  /* ----------------
   FAQ
   ---------------- */
-  
+
+  .faq-section{
+    background:#fff;
+    padding:clamp(56px,8vh,96px) 0;
+  }
+
+  .faq-script{
+    font-family:'Caveat',cursive;
+    font-size:clamp(1.5rem,3.5vw,2rem);
+    color:var(--main);
+    text-align:center;
+    line-height:1;
+    margin-bottom:8px;
+  }
+
   .faq{
-    max-width:850px;
-    margin:auto;
+    max-width:760px;
+    margin:0 auto;
   }
-  
+
   .faq-item{
-    border:1px solid #ddd;
-    border-radius:15px;
-    margin-bottom:15px;
+    border:1px solid rgba(217,139,139,.22);
+    border-radius:14px;
+    margin-bottom:clamp(12px,2vw,16px);
     overflow:hidden;
+    background:#fff;
+    box-shadow:0 4px 16px rgba(217,139,139,.05);
   }
-  
+
   .question{
-    background:white;
-    padding:20px;
+    background:#fff;
+    padding:clamp(16px,2.5vw,20px) clamp(44px,6vw,52px) clamp(16px,2.5vw,20px) clamp(18px,2.5vw,24px);
     cursor:pointer;
-    font-weight:700;
+    font-size:clamp(.9rem,1.7vw,1rem);
+    font-weight:600;
+    color:var(--dark);
+    line-height:1.75;
+    letter-spacing:.02em;
     position:relative;
+    transition:color .25s,background .25s;
   }
-  
+
+  .question::before{
+    content:"Q";
+    font-family:'Noto Serif JP',serif;
+    font-size:clamp(.82rem,1.5vw,.92rem);
+    font-weight:700;
+    color:var(--main);
+    margin-right:.5em;
+  }
+
   .question::after{
     content:"+";
     position:absolute;
-    right:20px;
+    right:clamp(16px,2.5vw,20px);
+    top:50%;
+    transform:translateY(-50%);
+    font-size:1.15rem;
+    font-weight:400;
+    color:var(--main-light);
+    line-height:1;
   }
-  
+
+  .faq-item.active .question{
+    background:#fdf7f7;
+    color:var(--main);
+  }
+
   .faq-item.active .question::after{
     content:"−";
+    color:var(--main);
   }
-  
+
   .answer{
     max-height:0;
     overflow:hidden;
-    transition:.4s;
-    background:#fafafa;
+    transition:max-height .35s ease;
+    background:#fdf9f9;
   }
-  
+
   .answer p{
-    padding:20px;
+    padding:0 clamp(18px,2.5vw,24px) clamp(18px,2.5vw,24px);
+    margin:0;
+    font-size:clamp(.84rem,1.55vw,.94rem);
+    color:#555;
+    line-height:1.9;
+    letter-spacing:.02em;
   }
   
   /* ----------------
   CTA
   ---------------- */
-  
+
   .cta{
-    background:var(--main);
-    color:white;
+    background:linear-gradient(180deg,#fff 0%,#fdf7f7 100%);
+    padding:clamp(56px,8vh,96px) 0;
     text-align:center;
+    color:var(--text);
   }
-  
-  .cta h2{
-    color:white;
+
+  .cta-script{
+    font-family:'Caveat',cursive;
+    font-size:clamp(1.5rem,3.5vw,2rem);
+    color:var(--main);
+    text-align:center;
+    line-height:1;
+    margin-bottom:8px;
   }
-  
-  .cta ul{
-    margin:30px 0;
+
+  .cta-accent{
+    color:var(--main);
   }
-  
-  .cta li{
-    margin-bottom:10px;
+
+  .cta-lead{
+    font-size:clamp(.88rem,1.7vw,1rem);
+    color:#555;
+    line-height:1.85;
+    margin:0 auto clamp(24px,4vh,32px);
+    max-width:640px;
+  }
+
+  .cta-points{
+    list-style:none;
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:10px 14px;
+    max-width:640px;
+    margin:0 auto clamp(32px,5vh,48px);
+    padding:0;
+    text-align:left;
+  }
+
+  .cta-points li{
+    position:relative;
+    padding:clamp(10px,1.8vw,14px) clamp(12px,2vw,16px) clamp(10px,1.8vw,14px) clamp(28px,4vw,36px);
+    background:#fff;
+    border:1px solid rgba(217,139,139,.2);
+    border-radius:12px;
+    font-size:clamp(.82rem,1.5vw,.92rem);
+    color:#444;
+    line-height:1.65;
+    box-shadow:0 3px 12px rgba(217,139,139,.06);
+    margin:0;
+  }
+
+  .cta-points li::before{
+    content:'';
+    position:absolute;
+    left:clamp(12px,2vw,16px);
+    top:50%;
+    transform:translateY(-50%);
+    width:6px;
+    height:6px;
+    border-radius:50%;
+    background:var(--main);
+  }
+
+  .cta-form-box{
+    max-width:640px;
+    margin:0 auto;
+    padding:clamp(28px,4vw,40px);
+    background:#fff;
+    border:1px solid rgba(217,139,139,.18);
+    border-radius:20px;
+    box-shadow:0 8px 32px rgba(217,139,139,.1);
+    text-align:left;
   }
 
   /* ----------------
@@ -351,37 +420,43 @@
   ---------------- */
 
   .contact-form{
-    max-width:600px;
-    margin:40px auto 0;
+    max-width:none;
+    margin:0;
     text-align:left;
   }
 
   .form-group{
-    margin-bottom:20px;
+    margin-bottom:clamp(16px,2.5vw,20px);
   }
 
   .form-group label{
     display:block;
     margin-bottom:8px;
-    font-weight:700;
-    font-size:14px;
+    font-weight:600;
+    font-size:clamp(.82rem,1.5vw,.9rem);
+    color:#444;
   }
 
   .form-group label .required{
-    color:#ffe0e0;
-    font-size:12px;
-    margin-left:6px;
+    color:var(--main);
+    background:#fdf2f2;
+    font-size:clamp(.68rem,1.2vw,.74rem);
+    margin-left:8px;
+    padding:2px 8px;
+    border-radius:999px;
+    font-weight:600;
   }
 
   .form-group input,
   .form-group textarea{
     width:100%;
-    padding:14px 18px;
-    border:none;
-    border-radius:10px;
+    padding:clamp(12px,2vw,14px) clamp(14px,2vw,18px);
+    border:1px solid rgba(217,139,139,.25);
+    border-radius:12px;
     font-family:inherit;
-    font-size:16px;
+    font-size:clamp(.88rem,1.6vw,.95rem);
     color:var(--text);
+    background:#fdfbfb;
   }
 
   .form-group textarea{
@@ -391,15 +466,21 @@
 
   .form-group input:focus,
   .form-group textarea:focus{
-    outline:3px solid rgba(255,255,255,.5);
+    outline:none;
+    border-color:var(--main-light);
+    box-shadow:0 0 0 3px rgba(217,139,139,.12);
   }
 
   .contact-form .btn{
     width:100%;
     border:none;
     cursor:pointer;
-    font-size:16px;
+    font-size:clamp(.92rem,1.7vw,1rem);
     font-family:inherit;
+    margin-top:8px;
+    padding:clamp(16px,2.5vw,18px);
+    border-radius:999px;
+    box-shadow:0 4px 16px rgba(217,139,139,.25);
   }
 
   .contact-form .btn:disabled{
@@ -411,38 +492,34 @@
   .form-message{
     margin-top:16px;
     padding:14px 18px;
-    border-radius:10px;
+    border-radius:12px;
     text-align:center;
-    font-weight:700;
+    font-weight:600;
+    font-size:clamp(.84rem,1.5vw,.92rem);
     display:none;
   }
 
   .form-message.success{
     display:block;
-    background:rgba(255,255,255,.2);
+    background:#fdf2f2;
+    color:var(--main);
+    border:1px solid rgba(217,139,139,.2);
   }
 
   .form-message.error{
     display:block;
-    background:rgba(0,0,0,.15);
+    background:#fff5f5;
+    color:#b55;
+    border:1px solid rgba(187,85,85,.2);
   }
   
   /* ----------------
-  タイムライン
+  ご契約後の流れ
   ---------------- */
-  
-  .timeline{
-    display:grid;
-    grid-template-columns:repeat(6,1fr);
-    gap:20px;
-  }
-  
-  .timeline div{
-    background:white;
-    padding:25px;
-    border-radius:20px;
-    text-align:center;
-    box-shadow:var(--shadow);
+
+  .flow-section{
+    background:var(--sub);
+    padding:clamp(56px,8vh,96px) 0;
   }
   
   /* ----------------
@@ -478,12 +555,6 @@
   
   .hero-inner,
   .compare{
-    grid-template-columns:1fr;
-  }
-  
-  .services,
-  .reason-grid,
-  .timeline{
     grid-template-columns:1fr;
   }
   

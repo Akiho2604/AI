@@ -1,6 +1,6 @@
 // スクロールアニメーション
 
-const fadeElements = document.querySelectorAll(".fade");
+const fadeElements = document.querySelectorAll(".fade, .worries-animate");
 
 const observer = new IntersectionObserver(
   (entries) => {
@@ -11,12 +11,19 @@ const observer = new IntersectionObserver(
     });
   },
   {
-    threshold:0.15
+    threshold:0.08,
+    rootMargin:"0px 0px 80px 0px"
   }
 );
 
-fadeElements.forEach((element)=>{
+fadeElements.forEach((element) => {
   observer.observe(element);
+  if (window.matchMedia("(max-width: 1024px)").matches) {
+    const rect = element.getBoundingClientRect();
+    if (rect.top < window.innerHeight + 120) {
+      element.classList.add("show");
+    }
+  }
 });
 
 
@@ -50,6 +57,8 @@ faqItems.forEach((item)=>{
 
 
 // お問い合わせフォームの処理は index.html 内のスクリプトで行っています
+// 改善事例スライダーは index.html 内のスクリプトで制御しています
+
 
 // CTAボタン表示制御
 
